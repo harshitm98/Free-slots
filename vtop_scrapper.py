@@ -39,7 +39,7 @@ driver.switch_to_window(signin_window_handle)
 name = input("Enter your name: ")
 username = input("Enter the registration number: ")
 password = input("Enter the password: ")
-
+time.sleep(60)
 usernameField = driver.find_element_by_xpath('//*[@id="uname"]')
 passwordFeild = driver.find_element_by_xpath('//*[@id="passwd"]')
 
@@ -251,3 +251,27 @@ for day in completed_timetable:
             time.append(1)
     timetable.append(time)
 print(timetable)
+
+# Saving the details to excel
+from xlutils.copy import copy 
+import xlrd
+book = xlrd.open_workbook('Timetable.xls')
+sheet_names = []
+for sheet in book.sheets():
+    sheet_names.append(str(sheet.name))
+    
+book_ro = copy(book)
+for i in range(len(sheet_names)):
+    sheet = book_ro.get_sheet(i)
+    sheet1 = book.sheet_by_index(i)
+    row = sheet1.nrows
+    col = sheet1.ncols
+    sheet.write(row,0,name)
+    for j in range(len(timetable[i])):
+        sheet.write(row,j+1,timetable[i][j])
+
+book_ro.save("Timetable.xls")
+        
+    
+    
+    
