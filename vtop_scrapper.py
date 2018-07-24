@@ -36,7 +36,8 @@ while not signin_window_handle:
 driver.switch_to_window(signin_window_handle)
 
 # Filling up the fields and logging in
-username = input("Enter the username: ")
+name = input("Enter your name: ")
+username = input("Enter the registration number: ")
 password = input("Enter the password: ")
 
 usernameField = driver.find_element_by_xpath('//*[@id="uname"]')
@@ -96,7 +97,7 @@ for slot in singled_out_slots:
 converted_lab_slot = []
 for slot in singled_out_cleaned:
     if slot == 'A1':
-        converted_lab_slot.append('L1')
+        converted_lab_slot.append('L01')
         converted_lab_slot.append('L14')
     elif slot == 'TA1':
         converted_lab_slot.append('L27')
@@ -112,10 +113,10 @@ for slot in singled_out_cleaned:
         converted_lab_slot.append('L41')
     
     elif slot == 'B1':
-        converted_lab_slot.append('L7')
+        converted_lab_slot.append('L07')
         converted_lab_slot.append('L20')
     elif slot == 'TB1':
-        converted_lab_slot.append('L4')
+        converted_lab_slot.append('L04')
     
     elif slot == 'B2':
         converted_lab_slot.append('L37')
@@ -143,7 +144,7 @@ for slot in singled_out_cleaned:
         
     elif slot == 'D1':
         converted_lab_slot.append('L19')
-        converted_lab_slot.append('L3')
+        converted_lab_slot.append('L03')
     elif slot == 'TD1':
         converted_lab_slot.append('L29')
     
@@ -156,7 +157,7 @@ for slot in singled_out_cleaned:
         converted_lab_slot.append('L59')
         
     elif slot == 'E1':
-        converted_lab_slot.append('L9')
+        converted_lab_slot.append('L09')
         converted_lab_slot.append('L25')
     elif slot == 'TE1':
         converted_lab_slot.append('L22')
@@ -168,7 +169,7 @@ for slot in singled_out_cleaned:
         converted_lab_slot.append('L52')
         
     elif slot == 'F1':
-        converted_lab_slot.append('L2')
+        converted_lab_slot.append('L02')
         converted_lab_slot.append('L15')
     elif slot == 'TF1':
         converted_lab_slot.append('L28')
@@ -180,10 +181,10 @@ for slot in singled_out_cleaned:
         converted_lab_slot.append('L58')
         
     elif slot == 'G1':
-        converted_lab_slot.append('L8')
+        converted_lab_slot.append('L08')
         converted_lab_slot.append('L21')
     elif slot == 'TG1':
-        converted_lab_slot.append('L5')
+        converted_lab_slot.append('L05')
     
     elif slot == 'G2':
         converted_lab_slot.append('L38')
@@ -193,13 +194,60 @@ for slot in singled_out_cleaned:
         
     elif slot == 'V1':
         converted_lab_slot.append('L16')
-        
+    elif slot == 'L6':
+        converted_lab_slot.append('L06')
     elif slot[0] == 'L':
-        converted_lab_slot.append(slot)
+        if(int(slot[1:])<10):
+            converted_lab_slot.append('L0'+slot[1:])
+        else:
+            converted_lab_slot.append(slot)
     else:
         converted_lab_slot.append(slot)
-    print(slot, converted_lab_slot[-1])
+    #print(slot, converted_lab_slot[-1])
 converted_lab_slot.sort()
 print(converted_lab_slot)
 
-# Writing to the excel file
+# Creating the overall timetable in terms of lab
+monday = []
+tuesday = []
+wednesday = []
+thursday = []
+friday = []
+for i in range(1,7):
+    monday.append('L0'+str(i))
+    monday.append('L'+str(i+30))
+    
+    if(i<=3):
+        tuesday.append('L0'+str(i+6))
+    else:
+        tuesday.append('L'+str(i+6))
+    tuesday.append('L'+str(i+36))
+    
+    if(i<=4):
+        wednesday.append('L'+str(i+12))
+    wednesday.append('L'+str(i+42))
+    
+    thursday.append('L'+str(i+18))
+    thursday.append('L'+str(i+48))
+    
+    friday.append('L'+str(i+24))
+    friday.append('L'+str(i+54))
+    
+monday.sort()
+tuesday.sort()
+wednesday.sort()
+thursday.sort()
+friday.sort()
+
+completed_timetable = [monday, tuesday, wednesday, thursday, friday]
+
+timetable = []
+for day in completed_timetable:
+    time = []
+    for slot in day:       
+        if slot in converted_lab_slot:
+            time.append(0)
+        else:
+            time.append(1)
+    timetable.append(time)
+print(timetable)
