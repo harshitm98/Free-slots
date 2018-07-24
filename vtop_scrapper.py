@@ -52,12 +52,14 @@ signIn.click()
 time.sleep(10)
 driver.find_element_by_xpath('//*[@id="page-content"]/header/nav/a').click()
 driver.find_element_by_xpath('//*[@id="dbMenu"]/ul/li[2]/a').click()
+time.sleep(3)
 driver.find_element_by_xpath('//*[@id="idOf4"]').click()
 time.sleep(10)
 driver.find_element_by_xpath('//*[@id="semesterSubId"]/option[2]').click()
 driver.find_element_by_xpath('//*[@id="studentTimeTable"]/div/div[2]/div/button').click()
 time.sleep(10)
 
+# Going through the slots
 i = 3
 slots = []
 while True:
@@ -73,3 +75,131 @@ while True:
 # Successfully logging out    
 driver.find_element_by_xpath('//*[@id="page-content"]/header/nav/div/ul/li/a').click()
 driver.find_element_by_xpath('//*[@id="btnLogout"]').click()
+
+# Creating or updating the excel file
+singled_out_slots = []
+for slot in slots:
+    if('+' in slot):
+        splitted_slot = slot.split('+')
+        for i in splitted_slot:
+            singled_out_slots.append(i)
+    else:
+        singled_out_slots.append(slot)
+        
+# Removing duplicate values
+singled_out_cleaned = []
+for slot in singled_out_slots:
+    if slot not in singled_out_cleaned:
+        singled_out_cleaned.append(slot)
+
+# Turning them in terms of lab slots
+converted_lab_slot = []
+for slot in singled_out_cleaned:
+    if slot == 'A1':
+        converted_lab_slot.append('L1')
+        converted_lab_slot.append('L14')
+    elif slot == 'TA1':
+        converted_lab_slot.append('L27')
+    elif slot == 'TAA1':
+        converted_lab_slot.append('L11')
+    
+    elif slot == 'A2':
+        converted_lab_slot.append('L31')
+        converted_lab_slot.append('L44')
+    elif slot == 'TA2':
+        converted_lab_slot.append('L57')
+    elif slot == 'TAA2':
+        converted_lab_slot.append('L41')
+    
+    elif slot == 'B1':
+        converted_lab_slot.append('L7')
+        converted_lab_slot.append('L20')
+    elif slot == 'TB1':
+        converted_lab_slot.append('L4')
+    
+    elif slot == 'B2':
+        converted_lab_slot.append('L37')
+        converted_lab_slot.append('L50')
+    elif slot == 'TB2':
+        converted_lab_slot.append('L34')
+    elif slot == 'TBB2':
+        converted_lab_slot.append('L47')
+        
+    elif slot == 'C1':
+        converted_lab_slot.append('L13')
+        converted_lab_slot.append('L26')
+    elif slot == 'TC1':
+        converted_lab_slot.append('L10')
+    elif slot == 'TCC1':
+        converted_lab_slot.append('L23')
+    
+    elif slot == 'C2':
+        converted_lab_slot.append('L43')
+        converted_lab_slot.append('L56')
+    elif slot == 'TC2':
+        converted_lab_slot.append('L40')
+    elif slot == 'TCC2':
+        converted_lab_slot.append('L53')
+        
+    elif slot == 'D1':
+        converted_lab_slot.append('L19')
+        converted_lab_slot.append('L3')
+    elif slot == 'TD1':
+        converted_lab_slot.append('L29')
+    
+    elif slot == 'D2':
+        converted_lab_slot.append('L49')
+        converted_lab_slot.append('L33')
+    elif slot == 'TD2':
+        converted_lab_slot.append('L46')
+    elif slot == 'TDD2':
+        converted_lab_slot.append('L59')
+        
+    elif slot == 'E1':
+        converted_lab_slot.append('L9')
+        converted_lab_slot.append('L25')
+    elif slot == 'TE1':
+        converted_lab_slot.append('L22')
+    
+    elif slot == 'E2':
+        converted_lab_slot.append('L39')
+        converted_lab_slot.append('L55')
+    elif slot == 'TE2':
+        converted_lab_slot.append('L52')
+        
+    elif slot == 'F1':
+        converted_lab_slot.append('L2')
+        converted_lab_slot.append('L15')
+    elif slot == 'TF1':
+        converted_lab_slot.append('L28')
+    
+    elif slot == 'F2':
+        converted_lab_slot.append('L32')
+        converted_lab_slot.append('L45')
+    elif slot == 'TF2':
+        converted_lab_slot.append('L58')
+        
+    elif slot == 'G1':
+        converted_lab_slot.append('L8')
+        converted_lab_slot.append('L21')
+    elif slot == 'TG1':
+        converted_lab_slot.append('L5')
+    
+    elif slot == 'G2':
+        converted_lab_slot.append('L38')
+        converted_lab_slot.append('L51')
+    elif slot == 'TG2':
+        converted_lab_slot.append('L35')
+        
+    elif slot == 'V1':
+        converted_lab_slot.append('L16')
+        
+    elif slot[0] == 'L':
+        converted_lab_slot.append(slot)
+    else:
+        converted_lab_slot.append(slot)
+    print(slot, converted_lab_slot[-1])
+converted_lab_slot.sort()
+print(converted_lab_slot)
+
+# Writing to the excel file
